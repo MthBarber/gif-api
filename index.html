@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working With API's</title>
+</head>
+
+<body style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <div style="display: flex; flex-direction: column;">
+        <img src="#">
+        <button onclick=loadCatImage() style="margin-top: 5px; width:180px; margin-left: auto; margin-right: auto;">New Cat Gif Please</button>
+    </div>
+    <div>
+        <h2>Search For A Gif</h2>
+        <input type="text" placeholder="Search...">
+        <button onclick=searchImage()>Search</button>
+    </div>
+    <script>
+        async function loadCatImage() {
+            try {
+                const img = document.querySelector('img');
+                const response = await fetch('https://api.giphy.com/v1/gifs/translate?api_key=5IVSZvBCjUM6n1CHwCdKme5DF9gmzNAF&s=cats', { mode: 'cors' })
+                const catData = await response.json();
+                img.src = catData.data.images.original.url
+
+            } catch (error) {
+                console.error("There has been a problem with your fetch operation: ", error)
+                img.src = "https://i.pinimg.com/originals/ef/8b/bd/ef8bbd4554dedcc2fd1fd15ab0ebd7a1.gif"
+            }
+        }
+        loadCatImage()
+
+        async function searchImage() {
+            const searchData = document.querySelector('input').value
+            const img = document.querySelector('img');
+            try {
+                const response = await fetch(`https://api.giphy.com/v1/gifs/translate?api_key=5IVSZvBCjUM6n1CHwCdKme5DF9gmzNAF&s=${searchData}`, { mode: 'cors' })
+                const urlData = await response.json();
+                img.src = urlData.data.images.original.url
+            } catch (error) {
+                console.error("There has been a problem with your fetch operation: ", error)
+                img.src = "https://i.pinimg.com/originals/ef/8b/bd/ef8bbd4554dedcc2fd1fd15ab0ebd7a1.gif"
+            }
+        }
+
+    </script>
+</body>
+
+</html>
